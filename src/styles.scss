@@ -619,10 +619,10 @@ input[type="text"] {
         background-color: #f7fafc;
       }
 
-      &.correct {
-        background-color: #d53f8c;
+      &.selected {
+        background-color: $primary-color;
         color: white;
-        border-color: #d53f8c;
+        border-color: $primary-color;
       }
     }
   }

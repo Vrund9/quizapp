@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import { debounce } from 'lodash';
 
 const FullNameInput = ({ onFullNameChange }) => {
   const [fullName, setFullName] = useState('');
 
+  const debouncedChange = useCallback(
+    debounce((value) => onFullNameChange(value), 300),
+    [onFullNameChange]
+  );
+
   const handleChange = (e) => {
     const newValue = e.target.value;
     setFullName(newValue);
-    onFullNameChange(newValue);
+    debouncedChange(newValue);
   };
 
   return (

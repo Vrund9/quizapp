@@ -24,8 +24,8 @@ const QuizQuestion = ({ question, currentQuestion, totalQuestions, onAnswer, tim
       {question.options.map((option, index) => (
         <button 
           key={index} 
-          className={`option ${question.correctAnswer === index + 1 ? 'correct' : ''}`} 
-          onClick={() => onAnswer(index + 1)}
+          className="option" 
+          onClick={() => onAnswer(index)}
         >
           {option}
         </button>

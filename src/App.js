@@ -157,10 +157,10 @@ const App = () => {
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(10);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [totalAnswered, setTotalAnswered] = useState(0);
   const [fullName, setFullName] = useState('');
   const [answers, setAnswers] = useState([]);
   const [totalQuestionsAnswered, setTotalQuestionsAnswered] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
 
 
   useEffect(() => {
@@ -183,10 +183,14 @@ const App = () => {
   };
 
   const handleAnswer = (answerIndex) => {
+    setSelectedAnswer(answerIndex);
     const newAnswers = [...answers];
     newAnswers[currentQuestion] = answerIndex;
     setAnswers(newAnswers);
-    handleNextQuestion();
+    setTimeout(() => {
+      handleNextQuestion();
+      setSelectedAnswer(null);
+    }, 500);
   };
 
   const handleNextQuestion = () => {
@@ -197,6 +201,7 @@ const App = () => {
       setScreen('result');
     }
   };
+
   const resetQuiz = () => {
     setCurrentQuestion(0);
     setScore(0);
@@ -262,37 +267,6 @@ const App = () => {
     </div>
   );
 
-
-
-  // const QuizQuestion = ({ question, currentQuestion, totalQuestions, onAnswer, timeLeft, onSkip, onExit }) => (
-  //   <div className="quiz-question">
-  //     <h2>Question {currentQuestion} of {totalQuestions}</h2>
-  //     <p>{question.question}</p>
-  //     <ul>
-  //       {question.options.map((option, index) => (
-  //         <li key={index} onClick={() => onAnswer(index)}>{option}</li>
-  //       ))}
-  //     </ul>
-  //     <p>Time left: {timeLeft} seconds</p>
-  //     <button className="button secondary" onClick={onSkip}>Skip</button>
-  //     <button className="button danger" onClick={onExit}>Exit Quiz</button> {/* Exit button */}
-  //   </div>
-  // );
-
-
-  // const QuizResult = () => {
-  //   const percentageScore = (score / totalAnswered) * 100; // Calculate percentage based on answers
-
-  //   return (
-  //     <div className="quiz-result">
-  //       <h2>Your Score: {percentageScore.toFixed(2)}%</h2>
-  //       <div>Correct Answers: {score}</div>
-  //       <div>Total Questions Answered: {totalAnswered}</div>
-  //       <button onClick={handleExitQuiz}>Exit</button>
-  //     </div>
-  //   );
-  // };
-
   const calculateResults = () => {
     let correct = 0;
     let incorrect = 0;
@@ -333,17 +307,18 @@ const App = () => {
           timeLeft={timeLeft}
           onSkip={handleNextQuestion}
           onExit={handleExitQuiz}
+          selectedAnswer={selectedAnswer}
         />
       )}
       {screen === 'result' && (
-         <QuizResult
-         totalQuestions={questions.length}
-         {...calculateResults()}
-         onRetake={() => {
-           resetQuiz();
-           setScreen('welcome');
-         }}
-       />
+        <QuizResult
+          totalQuestions={questions.length}
+          {...calculateResults()}
+          onRetake={() => {
+            resetQuiz();
+            setScreen('welcome');
+          }}
+        />
       )}
       {isModalOpen && <QuizRulesModal onClose={closeModal} />}
     </div>
