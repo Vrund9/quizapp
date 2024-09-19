@@ -1,6 +1,6 @@
 import React from 'react';
 
-const QuizQuestion = ({ question, currentQuestion, totalQuestions, onAnswer, timeLeft, onSkip, onExit }) => (
+const QuizQuestion = ({ question, currentQuestion, totalQuestions, onAnswer, timeLeft, onSkip, onExit, selectedAnswer }) => (
   <div className="quiz-question">
     <div className="quiz-header">
       <h1>QUIZ<span className="highlight">Mania</span></h1>
@@ -24,7 +24,7 @@ const QuizQuestion = ({ question, currentQuestion, totalQuestions, onAnswer, tim
       {question.options.map((option, index) => (
         <button 
           key={index} 
-          className="option" 
+          className={`option ${selectedAnswer === index ? 'selected' : ''}`}
           onClick={() => onAnswer(index)}
         >
           {option}

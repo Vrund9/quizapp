@@ -187,21 +187,18 @@ const App = () => {
     const newAnswers = [...answers];
     newAnswers[currentQuestion] = answerIndex;
     setAnswers(newAnswers);
-    setTimeout(() => {
-      handleNextQuestion();
-      setSelectedAnswer(null);
-    }, 500);
+    // Remove the automatic progression to the next question
   };
 
   const handleNextQuestion = () => {
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
-      setTimeLeft(10);
+      setTimeLeft(10); // Reset timer to 10 seconds
+      setSelectedAnswer(null); // Reset selected answer
     } else {
       setScreen('result');
     }
   };
-
   const resetQuiz = () => {
     setCurrentQuestion(0);
     setScore(0);
@@ -233,10 +230,10 @@ const App = () => {
 
       <div className="rules-section">
         <p>Please read all the rules about this quiz before you start.</p>
-        <button className="quiz-rules-btn" onClick={() => setIsModalOpen(true)}>Quiz rules</button>
+        <button className="quiz-rules-btn" onClick={onOpenModal}>Quiz rules</button>
       </div>
 
-      <FullNameInput onFullNameChange={handleFullNameChange} />
+      <FullNameInput fullName={fullName} onFullNameChange={setFullName} />
 
       <div className="form-group">
         <label>Please select topic to continue</label>
@@ -248,7 +245,7 @@ const App = () => {
                 name="topic"
                 value={topic.id}
                 checked={selectedTopic === topic.id}
-                onChange={() => setSelectedTopic(topic.id)}
+                onChange={() => onTopicSelect(topic.id)}
               />
               <span>{topic.name}</span>
             </label>
@@ -259,14 +256,12 @@ const App = () => {
       <button
         className="start-quiz-btn"
         disabled={!fullName || !selectedTopic}
-        onClick={handleStartQuiz}
+        onClick={onStartQuiz}
       >
         Start Quiz
       </button>
-
     </div>
   );
-
   const calculateResults = () => {
     let correct = 0;
     let incorrect = 0;
@@ -282,7 +277,10 @@ const App = () => {
       }
     });
 
-    return { correct, incorrect, notAnswered };
+    const totalAnswered = correct + incorrect;
+    const percentage = totalAnswered > 0 ? Math.round((correct / totalAnswered) * 100) : 0;
+
+    return { correct, incorrect, notAnswered, percentage, totalQuestions: questions.length };
   };
 
 

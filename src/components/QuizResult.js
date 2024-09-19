@@ -1,8 +1,7 @@
 import React from 'react';
-import { Frown, Check } from 'lucide-react';
+import { Frown } from 'lucide-react';
 
-const QuizResult = ({ score, totalQuestions, correctAnswers, incorrectAnswers, notAnswered, onRetake }) => {
-  const percentage = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
+const QuizResult = ({ correct, incorrect, notAnswered, percentage, totalQuestions, onRetake }) => {
   const isGoodScore = percentage >= 60;
 
   return (
@@ -12,32 +11,20 @@ const QuizResult = ({ score, totalQuestions, correctAnswers, incorrectAnswers, n
       </div>
       
       <div className="result-content">
-        {isGoodScore ? (
-          <>
-            <div className="success-icon"><Check size={48} /></div>
-            <h2>C O N G R A T U L A T I O N</h2>
-            <p>You successfully completed the Quiz and holds</p>
-          </>
-        ) : (
-          <>
-            <div className="failure-icon"><Frown size={48} /></div>
-            <h2>KEEP PRACTICING!</h2>
-            <p>You successfully completed the Quiz but you need to</p>
-          </>
-        )}
+        <div className="failure-icon"><Frown size={48} /></div>
+        <h2>KEEP PRACTICING!</h2>
+        <p>You successfully completed the Quiz but you need to</p>
         
         <div className="score-circle">
           <div className="score-percentage">{percentage}%</div>
           <div className="score-label">Your Score</div>
         </div>
         
-        {isGoodScore && <div className="score-message">Great job!</div>}
-        
         <div className="score-details">
           <p>Out of {totalQuestions} questions</p>
           <div className="score-breakdown">
-            <span className="correct">{correctAnswers} Correct</span>
-            <span className="incorrect">{incorrectAnswers} Incorrect</span>
+            <span className="correct">{correct} Correct</span>
+            <span className="incorrect">{incorrect} Incorrect</span>
             <span className="not-answered">{notAnswered} Not answered</span>
           </div>
         </div>
