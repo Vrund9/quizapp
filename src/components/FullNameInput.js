@@ -1,6 +1,20 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
+import { debounce } from 'lodash';
 
-const FullNameInput = ({ fullName, onFullNameChange }) => {
+const FullNameInput = ({ initialFullName, onFullNameChange }) => {
+  const [fullName, setFullName] = useState(initialFullName);
+
+  const debouncedChange = useCallback(
+    debounce((value) => onFullNameChange(value), 300),
+    [onFullNameChange]
+  );
+
+  const handleChange = (e) => {
+    const newValue = e.target.value;
+    setFullName(newValue);
+    debouncedChange(newValue);
+  };
+
   return (
     <div className="form-group">
       <label htmlFor="fullName">Full name</label>
@@ -8,7 +22,7 @@ const FullNameInput = ({ fullName, onFullNameChange }) => {
         type="text"
         id="fullName"
         value={fullName}
-        onChange={(e) => onFullNameChange(e.target.value)}
+        onChange={handleChange}
         placeholder="Full name"
       />
     </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './styles.scss';
 import QuizRulesModal from './components/QuizRulesModal';
 import QuizQuestion from './components/QuizQuestion';
@@ -220,9 +220,9 @@ const App = () => {
   const openModal = () => setIsModalOpen(true);  // Open modal
   const closeModal = () => setIsModalOpen(false);  // Close modal
 
-  const handleFullNameChange = (newFullName) => {
+  const handleFullNameChange = useCallback((newFullName) => {
     setFullName(newFullName);
-  };
+  }, []);
 
   const WelcomeScreen = ({ onOpenModal, onTopicSelect, onStartQuiz, fullName, setFullName }) => (
     <div className="quiz-mania">
@@ -233,7 +233,7 @@ const App = () => {
         <button className="quiz-rules-btn" onClick={onOpenModal}>Quiz rules</button>
       </div>
 
-      <FullNameInput fullName={fullName} onFullNameChange={setFullName} />
+      <FullNameInput initialFullName={fullName} onFullNameChange={handleFullNameChange} />
 
       <div className="form-group">
         <label>Please select topic to continue</label>
