@@ -47,14 +47,13 @@ const App = () => {
     const newAnswers = [...answers];
     newAnswers[currentQuestion] = answerIndex;
     setAnswers(newAnswers);
-    // Remove the automatic progression to the next question
   };
 
   const handleNextQuestion = () => {
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
-      setTimeLeft(10); // Reset timer to 10 seconds
-      setSelectedAnswer(null); // Reset selected answer
+      setTimeLeft(10); 
+      setSelectedAnswer(null);
     } else {
       setScreen('result');
     }
@@ -77,8 +76,8 @@ const App = () => {
     setTotalQuestionsAnswered(0);
   };
 
-  const openModal = () => setIsModalOpen(true);  // Open modal
-  const closeModal = () => setIsModalOpen(false);  // Close modal
+  const openModal = () => setIsModalOpen(true); 
+  const closeModal = () => setIsModalOpen(false); 
 
   const handleFullNameChange = useCallback((newFullName) => {
     setFullName(newFullName);
